@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SupplyGuard JP — サプライチェーン セキュリティ評価SaaS</title>
+  <meta name="description" content="取引先のサイバーリスクを自動スコアリング。SBOM分析・CVE監視・EU CRA対応レポートを月額15万円〜。設定3時間で全サプライヤーのリスクを可視化。">
+  <meta name="keywords" content="サプライチェーン,セキュリティ,SBOM,CVE,EU CRA,経産省,取引先リスク,サイバーセキュリティ">
+  <meta property="og:title" content="SupplyGuard JP — サプライチェーン セキュリティ評価SaaS">
+  <meta property="og:description" content="取引先のサイバーリスクを自動スコアリング。SBOM分析・CVE監視・EU CRA対応レポートを月額15万円〜。">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ja_JP">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --purple:   #7c3aed;
+      --purple-d: #6d28d9;
+      --indigo:   #4f46e5;
+      --gray1:    #111827;
+      --gray2:    #374151;
+      --gray3:    #6b7280;
+      --gray4:    #f3f4f6;
+      --white:    #ffffff;
+      --green:    #16a34a;
+    }
+    body { font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif; color: var(--gray1); background: var(--white); line-height: 1.7; }
+    nav { position: sticky; top: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 0 5%; height: 64px; background: rgba(255,255,255,.95); backdrop-filter: blur(8px); border-bottom: 1px solid #e5e7eb; }
+    .logo { font-size: 1.2rem; font-weight: 700; color: var(--purple); }
+    .nav-cta { background: var(--purple); color: #fff; padding: .5rem 1.2rem; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: .9rem; }
+    .nav-cta:hover { background: var(--purple-d); }
+    .hero { background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4c1d95 100%); color: #fff; padding: 90px 5% 80px; text-align: center; }
+    .hero-badge { display: inline-block; background: rgba(167,139,250,.2); border: 1px solid rgba(167,139,250,.4); color: #c4b5fd; padding: .25rem .9rem; border-radius: 999px; font-size: .85rem; margin-bottom: 1.5rem; }
+    .hero h1 { font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 800; line-height: 1.2; margin-bottom: 1.2rem; }
+    .hero h1 span { color: #c4b5fd; }
+    .hero p { font-size: 1.1rem; color: #e0e7ff; max-width: 640px; margin: 0 auto 2.5rem; }
+    .hero-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .btn-primary { background: #fff; color: var(--purple); padding: .85rem 2rem; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 1rem; }
+    .btn-primary:hover { background: #f5f3ff; }
+    .btn-secondary { background: transparent; color: #fff; border: 2px solid rgba(255,255,255,.4); padding: .85rem 2rem; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 1rem; }
+    .btn-secondary:hover { border-color: #fff; }
+    .trust { display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; padding: 1.5rem 5%; background: #faf5ff; border-bottom: 1px solid #e9d5ff; font-size: .9rem; color: var(--gray3); }
+    .trust span::before { content: '✓ '; color: var(--purple); font-weight: 700; }
+    /* Score board */
+    .score-section { padding: 80px 5%; background: var(--gray4); }
+    .score-inner { max-width: 900px; margin: 0 auto; text-align: center; }
+    .score-inner h2 { font-size: 1.9rem; font-weight: 800; margin-bottom: .5rem; }
+    .score-sub { color: var(--gray3); margin-bottom: 2.5rem; }
+    .vendor-table { background: #1e1b4b; border-radius: 12px; overflow: hidden; font-family: monospace; font-size: .85rem; }
+    .vt-header { background: #312e81; padding: .75rem 1.5rem; display: flex; justify-content: space-between; color: #a5b4fc; font-size: .8rem; }
+    .vt-row { display: grid; grid-template-columns: 2fr 1fr 1fr 1.2fr; padding: .85rem 1.5rem; border-bottom: 1px solid #2e2a5e; align-items: center; }
+    .vt-row:last-child { border-bottom: none; }
+    .vendor-name { color: #e0e7ff; }
+    .score-a { color: #34d399; font-weight: 700; }
+    .score-b { color: #60a5fa; font-weight: 700; }
+    .score-c { color: #fbbf24; font-weight: 700; }
+    .score-d { color: #f87171; font-weight: 700; }
+    .badge { padding: .15rem .6rem; border-radius: 4px; font-size: .75rem; font-weight: 700; }
+    .badge-ok { background: #065f46; color: #34d399; }
+    .badge-warn { background: #78350f; color: #fbbf24; }
+    .badge-alert { background: #7f1d1d; color: #f87171; }
+    /* Features */
+    section.features { padding: 80px 5%; max-width: 1100px; margin: 0 auto; }
+    h2.section-title { font-size: 1.9rem; font-weight: 800; margin-bottom: .5rem; }
+    .section-sub { color: var(--gray3); margin-bottom: 3rem; font-size: 1rem; }
+    .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+    .feature-card { border: 1px solid #e5e7eb; border-radius: 12px; padding: 1.75rem; transition: box-shadow .2s, transform .2s; }
+    .feature-card:hover { box-shadow: 0 8px 32px rgba(124,58,237,.12); transform: translateY(-3px); }
+    .feature-icon { font-size: 2rem; margin-bottom: 1rem; }
+    .feature-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: .5rem; }
+    .feature-card p { font-size: .9rem; color: var(--gray2); }
+    /* Pricing */
+    .pricing-wrap { background: var(--gray4); padding: 80px 5%; }
+    .pricing-inner { max-width: 1000px; margin: 0 auto; }
+    .pricing-inner h2 { text-align: center; font-size: 1.9rem; font-weight: 800; margin-bottom: .5rem; }
+    .pricing-sub { text-align: center; color: var(--gray3); margin-bottom: 2.5rem; }
+    .plans { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; }
+    .plan { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 2rem 1.5rem; text-align: center; }
+    .plan.popular { border-color: var(--purple); box-shadow: 0 0 0 2px var(--purple); }
+    .plan-badge { background: var(--purple); color: #fff; font-size: .75rem; padding: .2rem .7rem; border-radius: 999px; display: inline-block; margin-bottom: .5rem; }
+    .plan h3 { font-size: 1.1rem; margin-bottom: .5rem; }
+    .plan .price { font-size: 1.8rem; font-weight: 800; color: var(--gray1); margin-bottom: .25rem; }
+    .plan .price span { font-size: 1rem; font-weight: 400; color: var(--gray3); }
+    .plan .price-note { font-size: .8rem; color: var(--gray3); margin-bottom: 1rem; }
+    .plan ul { list-style: none; text-align: left; margin: 1rem 0; font-size: .88rem; }
+    .plan ul li { padding: .3rem 0; border-bottom: 1px solid #f3f4f6; }
+    .plan ul li::before { content: '✓ '; color: var(--green); font-weight: 700; }
+    .plan-cta { display: block; background: var(--purple); color: #fff; padding: .75rem; border-radius: 8px; text-decoration: none; font-weight: 600; margin-top: 1.5rem; }
+    .plan-cta:hover { background: var(--purple-d); }
+    .plan-cta.outline { background: transparent; border: 2px solid var(--purple); color: var(--purple); }
+    .plan-cta.outline:hover { background: var(--purple); color: #fff; }
+    .cta-section { background: linear-gradient(135deg, #1e1b4b, #4c1d95); color: #fff; text-align: center; padding: 80px 5%; }
+    .cta-section h2 { font-size: 2rem; font-weight: 800; margin-bottom: 1rem; }
+    .cta-section p { color: #c4b5fd; max-width: 520px; margin: 0 auto 2rem; }
+    footer { background: var(--gray1); color: var(--gray3); text-align: center; padding: 2rem; font-size: .85rem; }
+    footer a { color: #9ca3af; text-decoration: none; }
+    @media (max-width: 640px) {
+      .hero h1 { font-size: 1.7rem; }
+      .vt-row { grid-template-columns: 2fr 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">SupplyGuard JP</div>
+  <a href="mailto:contact@finops-jp.com" class="nav-cta">デモを申し込む</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-badge">SBOM / EU CRA / 経産省GL 対応</div>
+  <h1>取引先の<span>サイバーリスク</span>を、<br>自動で数値化する。</h1>
+  <p>サプライヤーのセキュリティ状態をSBOM分析・CVE監視・アンケートで自動評価。EU CRA・経産省ガイドラインへの準拠レポートをAIが日本語で生成します。</p>
+  <div class="hero-btns">
+    <a href="mailto:contact@finops-jp.com" class="btn-primary">デモを申し込む →</a>
+    <a href="#features" class="btn-secondary">機能を見る</a>
+  </div>
+</div>
+
+<div class="trust">
+  <span>設定3時間で全サプライヤーを登録可能</span>
+  <span>SBOM（CycloneDX/SPDX）対応</span>
+  <span>EU CRA / 経産省GL 準拠レポート</span>
+  <span>IT導入補助金対応予定</span>
+</div>
+
+<!-- Vendor Score Demo -->
+<div class="score-section">
+  <div class="score-inner">
+    <h2>取引先リスクダッシュボード</h2>
+    <p class="score-sub">37社のサプライヤーをリスクスコアでリアルタイム管理</p>
+    <div class="vendor-table">
+      <div class="vt-header">
+        <span>取引先名</span>
+        <span>スコア</span>
+        <span>CVE</span>
+        <span>ステータス</span>
+      </div>
+      <div class="vt-row">
+        <span class="vendor-name">株式会社アルファテック</span>
+        <span class="score-a">88 (A)</span>
+        <span style="color:#34d399">0件</span>
+        <span><span class="badge badge-ok">準拠</span></span>
+      </div>
+      <div class="vt-row">
+        <span class="vendor-name">ベータ部品工業</span>
+        <span class="score-b">74 (B)</span>
+        <span style="color:#fbbf24">3件</span>
+        <span><span class="badge badge-warn">要確認</span></span>
+      </div>
+      <div class="vt-row">
+        <span class="vendor-name">ガンマシステムズ株式会社</span>
+        <span class="score-c">61 (C)</span>
+        <span style="color:#fbbf24">7件</span>
+        <span><span class="badge badge-warn">要対応</span></span>
+      </div>
+      <div class="vt-row">
+        <span class="vendor-name">デルタ電子部品</span>
+        <span class="score-d">43 (D)</span>
+        <span style="color:#f87171">12件</span>
+        <span><span class="badge badge-alert">リスク高</span></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Features -->
+<section class="features" id="features">
+  <h2 class="section-title">主要機能</h2>
+  <p class="section-sub">Excelによる属人管理から、自動スキャン・スコアリングへ</p>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">📦</div>
+      <h3>SBOM分析 × CVE自動照合</h3>
+      <p>CycloneDX / SPDX形式のSBOMをアップロードするだけで、NVD・JVNと自動照合。CVSS 9.0以上のCritical脆弱性をリアルタイムアラートします。</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🏆</div>
+      <h3>9カテゴリ リスクスコアリング</h3>
+      <p>SBOM・脆弱性管理・インシデント対応・データ保護など9軸で取引先をA〜Eグレードで評価。業界平均との比較も自動表示します。</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📋</div>
+      <h3>セキュリティアンケート自動配信</h3>
+      <p>取引先へのセキュリティアンケートをメールで自動送信・回収・スコアリング。回答率・平均スコアをダッシュボードで一元管理します。</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🇪🇺</div>
+      <h3>EU CRA / 経産省GL 対応レポート</h3>
+      <p>EU サイバーレジリエンス法（CRA）・経産省サプライチェーンセキュリティガイドラインへの準拠状況をAIが自動評価しPDFで出力します。</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔔</div>
+      <h3>CVE新規発生アラート</h3>
+      <p>監視中コンポーネントに新しいCVEが公開された瞬間にSlack / メールで通知。「どの取引先が影響を受けるか」を即座に特定できます。</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🤖</div>
+      <h3>AI日本語改善提案</h3>
+      <p>スコア低下の原因を分析し「Log4j 2.14.0 → 2.17.1へのアップデートで CRITICAL 3件を解消できます」など具体的な改善手順を日本語で提示します。</p>
+    </div>
+  </div>
+</section>
+
+<!-- Pricing -->
+<div class="pricing-wrap">
+  <div class="pricing-inner">
+    <h2>料金プラン</h2>
+    <p class="pricing-sub">PoCプランで3ヶ月お試し。IT導入補助金（申請サポート付き）で実質負担を削減。</p>
+    <div class="plans">
+      <div class="plan">
+        <h3>スターター</h3>
+        <div class="price">¥150,000<span>/月</span></div>
+        <div class="price-note">取引先〜50社</div>
+        <ul>
+          <li>基本スコアリング</li>
+          <li>SBOM分析（月5件）</li>
+          <li>CVEアラート</li>
+          <li>月次レポート</li>
+        </ul>
+        <a href="mailto:contact@finops-jp.com" class="plan-cta outline">お問い合わせ</a>
+      </div>
+      <div class="plan popular">
+        <div class="plan-badge">人気</div>
+        <h3>グロース</h3>
+        <div class="price">¥300,000<span>/月</span></div>
+        <div class="price-note">取引先〜200社</div>
+        <ul>
+          <li>全機能利用可能</li>
+          <li>SBOM分析（無制限）</li>
+          <li>EU CRA / 経産省GL レポート</li>
+          <li>アンケート自動配信</li>
+          <li>Slack / メール通知</li>
+          <li>APIアクセス</li>
+        </ul>
+        <a href="mailto:contact@finops-jp.com" class="plan-cta">デモを申し込む</a>
+      </div>
+      <div class="plan">
+        <h3>エンタープライズ</h3>
+        <div class="price">¥500,000<span>〜/月</span></div>
+        <div class="price-note">取引先〜500社</div>
+        <ul>
+          <li>SSO / SAML対応</li>
+          <li>カスタムルール設定</li>
+          <li>専任カスタマーサクセス</li>
+          <li>SLA 99.9%</li>
+          <li>オンプレミス対応可</li>
+        </ul>
+        <a href="mailto:contact@finops-jp.com" class="plan-cta outline">個別見積もり</a>
+      </div>
+    </div>
+    <p style="text-align:center; margin-top:1.5rem; font-size:.9rem; color:var(--gray3);">PoC評価プラン: 40万円 / 3ヶ月（〜50社、評価レポート付き）</p>
+  </div>
+</div>
+
+<div class="cta-section">
+  <h2>取引先のサイバーリスクを今すぐ可視化する</h2>
+  <p>β版ユーザーを3社限定で募集中。PoC期間中は専任エンジニアがセットアップをサポートします。</p>
+  <a href="mailto:contact@finops-jp.com?subject=SupplyGuard JP デモ申込" class="btn-primary">デモを申し込む →</a>
+</div>
+
+<footer>
+  <p>&copy; 2026 SupplyGuard JP — <a href="mailto:contact@finops-jp.com">contact@finops-jp.com</a></p>
+</footer>
+
+</body>
+</html>
